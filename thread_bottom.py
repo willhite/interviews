@@ -1,3 +1,5 @@
+import string
+
 class Node(object):
     spaces = "                          "
     lnodes = []
@@ -12,6 +14,7 @@ class Node(object):
         self.value = value
         self.left = left
         self.right = right
+        self.next = None
 
     def __str__(self):
         return (
@@ -23,29 +26,47 @@ class Node(object):
             "y: (%s, %s)" % (self. min_y, self.max_y)
         )
 
-    def thread_bottom(self, thread):
+    def thread_bottom(self, prev):
+        def add_prev(p):
+            if prev:
+                prev.next = p
+            return p
+
         added = False
         if not self.left:
-            thread.append(self.value)
-            added = True
-        if self.left:
-            self.left.thread_bottom(thread)
+            prev = add_prev(self)
+        else:
+            prev = self.left.thread_bottom(prev)
         if self.right:
-            self.right.thread_bottom(thread)
-        if not self.right and not added:
-            thread.append(self.value)
+            prev = self.right.thread_bottom(prev)
+        return prev
 
-    def print(self, level):
+
+    def print_node(self, level):
         print("{}{}".format(self.spaces[0:level*2], self.value))
         if self.left:
-            self.left.print(level+1)
+            self.left.print_node(level+1)
         else:
             print("{}None".format(self.spaces[0:(level+1)*2]))
         if self.right:
-            self.right.print(level+1)
+            self.right.print_node(level+1)
         else:
             print("{}None".format(self.spaces[0:(level+1)*2]))
 
+
+    def print_bottom(self, level):
+        print("in print_bottom")
+        n = self
+        while n.left:
+            n = n.left
+
+        vals = [n.value]
+        while n.next:
+            n = n.next
+            vals.append(n.value)
+        
+        s1 = string.join(vals, ", ")
+        print('bottom:', s1)
 
 # a
 #   b
@@ -75,7 +96,6 @@ test = Node("a",
     )
 )
 
-test.print(0)
-thread = []
-test.thread_bottom(thread)
-print("thread_bottom:", thread)
+test.print_node(0)
+test.thread_bottom(None)
+test.print_bottom(0)
