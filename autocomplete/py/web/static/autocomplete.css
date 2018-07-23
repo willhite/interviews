@@ -1,0 +1,17 @@
+body {
+    font-family: Helvetica;
+}
+
+.search {
+    width: 600px;
+    margin-top: 40px;
+    margin-left: 40px;
+    color: grey;
+}
+
+input[type=text] {
+    font-size: 36px;
+    line-height: 36px;
+    width: 400px;
+    display: block;
+}

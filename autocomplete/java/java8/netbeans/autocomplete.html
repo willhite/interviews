@@ -1,0 +1,43 @@
+<html>
+  <head>
+    <title>Wikipedia Auto-Complete</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        $(function() {
+            $("#query").on("input", function() {
+                var query = $("#query").val();
+                $.ajax({
+                    url: "/search?q=" + query
+                }).done(function(response) {
+                    $("#results").html(
+                        "<div>Results for " + response.query + "</div>" +
+                            "<div>" + response.results.join("<br/>") + "</div>");
+                });
+            });
+        });
+    </script>
+    <style>
+        body {
+            font-family: Helvetica;
+        }
+        .search {
+            width: 600px;
+            margin-top: 40px;
+            margin-left: 40px;
+            color: grey;
+        }
+        input[type=text] {
+            font-size: 36px;
+            line-height: 36px;
+            width: 400px;
+            display: block;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="search">
+      <input id="query" name="query" type="text" />
+      <div id="results"/>
+    </div>
+  </body>
+</html>
