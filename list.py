@@ -1,5 +1,6 @@
 import random
 
+
 class CircularListNode(object):
     def __init__(self, data):
         self.data = data
@@ -14,22 +15,25 @@ class CircularListNode(object):
         print()
             
     def append(self, data):
-        n = self.next
+        next = self.next
         prev = self
-        while n != self:
-            if prev.data <= data and data <= n.data:
-                break;
-            if prev.data > n.data and (prev.data < data or n.data > data):
-                break;
-            prev = n
-            n = n.next
+        # find the spot to insert the new node
+        while next != self:
+            # is it somewhere int the middle of the list
+            if prev.data <= data and data <= next.data:
+                break
+            # is it where the node wraps around
+            if prev.data > next.data and (prev.data < data or next.data > data):
+                break
+            prev = next
+            next = next.next
         new = CircularListNode(data)
         prev.next = new
-        new.next = n
+        new.next = next
             
 
 for i in range(5):
-    test = list(range(-10,10))
+    test = list(range(-10, 10))
     random.shuffle(test)
     print("testing:", test)
     clist = CircularListNode(test[0])
